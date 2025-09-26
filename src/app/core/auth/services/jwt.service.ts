@@ -7,10 +7,12 @@ export class JwtService {
   }
 
   saveToken(token: string): void {
+    console.log("entro a saveToken");
     window.localStorage["jwtToken"] = token;
   }
 
   destroyToken(): void {
+    console.log("entro a destroyToken");
     window.localStorage.removeItem("jwtToken");
   }
 }

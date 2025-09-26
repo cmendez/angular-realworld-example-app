@@ -49,7 +49,8 @@ export class UserService {
   getCurrentUser(): Observable<{ user: User }> {
     return this.http.get<{ user: User }>("/user").pipe(
       tap({
-        next: ({ user }) => this.setAuth(user),
+        // Correcto: Solo actualiza los datos del usuario, no la sesión completa
+        next: ({ user }) => this.currentUserSubject.next(user), 
         error: () => this.purgeAuth(),
       }),
       shareReplay(1),
