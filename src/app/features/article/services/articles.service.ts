@@ -38,15 +38,13 @@ export class ArticlesService {
 
   create(article: Partial<Article>): Observable<Article> {
     return this.http
-      .post<{ article: Article }>("/articles/", { article: article })
+      .post<{ article: Article }>('/articles', { article: article })
       .pipe(map((data) => data.article));
   }
 
-  update(article: Partial<Article>): Observable<Article> {
+  update(payload: Partial<Article> & { slug: string }): Observable<Article> {
     return this.http
-      .put<{ article: Article }>(`/articles/${article.slug}`, {
-        article: article,
-      })
+      .put<{ article: Article }>(`/articles/${payload.slug}`, { article: payload })
       .pipe(map((data) => data.article));
   }
 

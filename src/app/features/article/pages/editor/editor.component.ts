@@ -67,10 +67,21 @@ export default class EditorComponent implements OnInit {
           if (user.username === article.author.username) {
             this.tagList = article.tagList;
 
-            // Convertimos el string a Date para el formulario
+            let publishDateForForm: Date | null = null;
+            
+            if (article.publishDate) {
+              // El string que llega es "2025-09-10T00:00:00.000Z"
+              // 1. Tomamos solo la parte de la fecha: "2025-09-10"
+              const datePart = article.publishDate.split('T')[0];
+              
+              // 2. Creamos un nuevo objeto Date usando esa parte. Al no tener
+              // información de zona horaria, JavaScript lo crea en la zona local.
+              publishDateForForm = new Date(datePart + 'T00:00:00');
+            }
+
             const articleForForm = {
               ...article,
-              publishDate: article.publishDate ? new Date(article.publishDate) : null
+              publishDate: publishDateForForm,
             };
 
             this.articleForm.patchValue(articleForForm);
@@ -97,24 +108,21 @@ export default class EditorComponent implements OnInit {
   }
 
   submitForm(): void {
-    // 1. PRIMERO, lee los valores mientras el formulario aún está HABILITADO.
     const formValue = this.articleForm.getRawValue();
-
-    // 2. DESPUÉS, actualiza el estado para deshabilitar la UI.
     this.isSubmitting = true;
-
-    // 3. El resto de la lógica sigue igual, usando el 'formValue' que ya capturaste.
     this.addTag();
     const slug = this.route.snapshot.params["slug"];
 
+    // Construimos el objeto de datos asegurando que el tipo sea correcto.
     const articleData = {
       title: formValue.title,
       description: formValue.description,
-      body: formValue.body, // <-- ESTA LÍNEA FALTABA
+      body: formValue.body,
       tagList: this.tagList,
+      // Si hay fecha, la formateamos. Si no, asignamos 'undefined'.
       publishDate: formValue.publishDate
-        ? formValue.publishDate.toISOString()
-        : null,
+        ? new Date(formValue.publishDate).toLocaleDateString('en-CA') // 'en-CA' da el formato YYYY-MM-DD
+        : undefined,
     };
 
     const observable = slug
@@ -125,7 +133,7 @@ export default class EditorComponent implements OnInit {
       next: (article) => this.router.navigate(["/article/", article.slug]),
       error: (err) => {
         this.errors = err;
-        this.isSubmitting = false; // Vuelve a habilitar el formulario en caso de error
+        this.isSubmitting = false;
       },
     });
   }
