@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   UntypedFormGroup,
+  Validators,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { combineLatest } from "rxjs";
@@ -12,24 +14,34 @@ import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // <-- AÑADIR
 
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
   body: FormControl<string>;
+  publishDate: FormControl<Date | null>; // <-- AÑADIR
 }
 
 @Component({
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
-  imports: [ListErrorsComponent, ReactiveFormsModule],
+  // Añade BsDatepickerModule a los imports
+  imports: [
+    CommonModule, // <-- 2. AÑADE CommonModule AQUÍ
+    ListErrorsComponent,
+    ReactiveFormsModule,
+    BsDatepickerModule
+  ],
+  standalone: true, // <-- ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ (si no estaba)
 })
 export default class EditorComponent implements OnInit {
   tagList: string[] = [];
   articleForm: UntypedFormGroup = new FormGroup<ArticleForm>({
-    title: new FormControl("", { nonNullable: true }),
-    description: new FormControl("", { nonNullable: true }),
-    body: new FormControl("", { nonNullable: true }),
+    title: new FormControl("", { validators: [Validators.required], nonNullable: true }),
+    description: new FormControl("", { validators: [Validators.required], nonNullable: true }),
+    body: new FormControl("", { validators: [Validators.required], nonNullable: true }), 
+    publishDate: new FormControl<Date | null>(null),
   });
   tagField = new FormControl<string>("", { nonNullable: true });
 
@@ -54,7 +66,14 @@ export default class EditorComponent implements OnInit {
         .subscribe(([article, { user }]) => {
           if (user.username === article.author.username) {
             this.tagList = article.tagList;
-            this.articleForm.patchValue(article);
+
+            // Convertimos el string a Date para el formulario
+            const articleForForm = {
+              ...article,
+              publishDate: article.publishDate ? new Date(article.publishDate) : null
+            };
+
+            this.articleForm.patchValue(articleForForm);
           } else {
             void this.router.navigate(["/"]);
           }
@@ -78,14 +97,24 @@ export default class EditorComponent implements OnInit {
   }
 
   submitForm(): void {
-    this.isSubmitting = true;
-    // update any single tag
-    this.addTag();
+    // 1. PRIMERO, lee los valores mientras el formulario aún está HABILITADO.
+    const formValue = this.articleForm.getRawValue();
 
+    // 2. DESPUÉS, actualiza el estado para deshabilitar la UI.
+    this.isSubmitting = true;
+
+    // 3. El resto de la lógica sigue igual, usando el 'formValue' que ya capturaste.
+    this.addTag();
     const slug = this.route.snapshot.params["slug"];
+
     const articleData = {
-      ...this.articleForm.value,
+      title: formValue.title,
+      description: formValue.description,
+      body: formValue.body, // <-- ESTA LÍNEA FALTABA
       tagList: this.tagList,
+      publishDate: formValue.publishDate
+        ? formValue.publishDate.toISOString()
+        : null,
     };
 
     const observable = slug
@@ -96,7 +125,7 @@ export default class EditorComponent implements OnInit {
       next: (article) => this.router.navigate(["/article/", article.slug]),
       error: (err) => {
         this.errors = err;
-        this.isSubmitting = false;
+        this.isSubmitting = false; // Vuelve a habilitar el formulario en caso de error
       },
     });
   }

@@ -4,7 +4,6 @@ import {
   provideAppInitializer,
 } from "@angular/core";
 import { provideRouter } from "@angular/router";
-
 import { routes } from "./app.routes";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { JwtService } from "./core/auth/services/jwt.service";
@@ -13,6 +12,7 @@ import { apiInterceptor } from "./core/interceptors/api.interceptor";
 import { tokenInterceptor } from "./core/interceptors/token.interceptor";
 import { errorInterceptor } from "./core/interceptors/error.interceptor";
 import { EMPTY } from "rxjs";
+import { provideAnimations } from "@angular/platform-browser/animations"; // <-- 1. IMPORTAR ESTO
 
 export function initAuth(jwtService: JwtService, userService: UserService) {
   return () => (jwtService.getToken() ? userService.getCurrentUser() : EMPTY);
@@ -28,5 +28,6 @@ export const appConfig: ApplicationConfig = {
       const initializerFn = initAuth(inject(JwtService), inject(UserService));
       return initializerFn();
     }),
+    provideAnimations(), // <-- 2. AÑADIR ESTA LÍNEA
   ],
 };
