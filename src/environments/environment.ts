@@ -1,4 +1,7 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000/api' //'https://api.realworld.show/api'
+  // Renombrado para claridad
+  phpApiUrl: 'http://localhost:8000/api', 
+  // Añadimos el nuevo backend de Python
+  pythonApiUrl: 'http://localhost:8080/api' 
 };

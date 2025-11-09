@@ -2,10 +2,17 @@ import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
 
 import { JwtService } from "./jwt.service";
-import { map, distinctUntilChanged, tap, shareReplay } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
+import {
+  map,
+  distinctUntilChanged,
+  tap,
+  shareReplay,
+  switchMap, // <-- Añade switchMap
+} from "rxjs/operators";
+import { HttpClient, HttpContext } from "@angular/common/http"; // <-- Añade HttpContext
 import { User } from "../user.model";
 import { Router } from "@angular/router";
+import { USE_PYTHON_API } from "../../interceptors/api-context.token";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -27,8 +34,36 @@ export class UserService {
     password: string;
   }): Observable<{ user: User }> {
     return this.http
-      .post<{ user: User }>("/users/login", { user: credentials })
-      .pipe(tap(({ user }) => this.setAuth(user)));
+      .post<{ user: User }>("/users/login", { user: credentials }) // 1. Llama a PHP
+      .pipe(
+        // 2. PHP devuelve ambos tokens, 'setAuth' los guarda
+        tap(({ user }) => this.setAuth(user)),
+        
+        // 3. --- ¡INICIO DE LA PRUEBA! ---
+        // Justo después de guardar, usamos switchMap para hacer una NUEVA llamada
+        switchMap((phpLoginResponse) => {
+          console.log("LOGIN (PHP/Python) EXITOSO. Probando endpoint de artículos de Python...");
+          
+          // Prepara el contexto para que los interceptores sepan
+          // que esta llamada es para Python
+          const context = new HttpContext().set(USE_PYTHON_API, true);
+          
+          // Llama al endpoint de artículos.
+          // (api.interceptor cambiará la URL a :8080)
+          // (token.interceptor adjuntará el 'python_token' como Bearer)
+          return this.http.get('/articles', { context }).pipe(
+            map((pythonArticlesResponse) => {
+              // 4. Si llegamos aquí, ¡FUNCIONÓ!
+              console.log("¡ÉXITO EN LA PRUEBA! Respuesta de /articles (Python):", pythonArticlesResponse);
+              
+              // Devuelve la respuesta original del login
+              // para que el componente (auth.component) pueda navegar a home
+              return phpLoginResponse; 
+            })
+          );
+        })
+        // --- FIN DE LA PRUEBA ---
+      );
   }
 
   register(credentials: {
@@ -65,13 +100,23 @@ export class UserService {
     );
   }
 
-  setAuth(user: User): void {
+  setAuth(user: User & { python_token?: string }): void { // <-- Modifica la firma
+    // 1. Guarda el token de PHP (como antes)
     this.jwtService.saveToken(user.token);
     this.currentUserSubject.next(user);
+
+    // 2. NUEVO: Guarda el token de Python si existe
+    if (user.python_token) {
+      window.localStorage.setItem('python_token', user.python_token);
+    }
   }
 
   purgeAuth(): void {
+    // 1. Borra el token de PHP (como antes)
     this.jwtService.destroyToken();
     this.currentUserSubject.next(null);
+
+    // 2. NUEVO: Borra el token de Python
+    window.localStorage.removeItem('python_token');
   }
 }
