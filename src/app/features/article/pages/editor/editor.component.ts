@@ -14,13 +14,14 @@ import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; // <-- AÑADIR
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; 
 
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
   body: FormControl<string>;
-  publishDate: FormControl<Date | null>; // <-- AÑADIR
+  publishDate: FormControl<Date | null>;
+  image: FormControl<string>
 }
 
 @Component({
@@ -42,12 +43,16 @@ export default class EditorComponent implements OnInit {
     description: new FormControl("", { validators: [Validators.required], nonNullable: true }),
     body: new FormControl("", { validators: [Validators.required], nonNullable: true }), 
     publishDate: new FormControl<Date | null>(null),
+    image: new FormControl("", { nonNullable: true }),
   });
   tagField = new FormControl<string>("", { nonNullable: true });
 
   errors: Errors | null = null;
   isSubmitting = false;
   destroyRef = inject(DestroyRef);
+  imageSearchResults: any[] = [];
+  isSearchingImages = false;
+  imageSearchError: string | null = null;
 
   constructor(
     private readonly articleService: ArticlesService,
@@ -118,6 +123,7 @@ export default class EditorComponent implements OnInit {
       title: formValue.title,
       description: formValue.description,
       body: formValue.body,
+      image: formValue.image,
       tagList: this.tagList,
       // Si hay fecha, la formateamos. Si no, asignamos 'undefined'.
       publishDate: formValue.publishDate
@@ -137,4 +143,40 @@ export default class EditorComponent implements OnInit {
       },
     });
   }
+
+  /**
+   * Llama al servicio para buscar imágenes
+   */
+  searchForImage(query: string): void {
+    if (!query) {
+      this.imageSearchResults = [];
+      return;
+    }
+
+    this.isSearchingImages = true;
+    this.imageSearchError = null;
+    
+    this.articleService.searchImages(query)
+      .pipe(takeUntilDestroyed(this.destroyRef)) // Usamos el patrón que ya tienes
+      .subscribe({
+        next: (data) => {
+          this.imageSearchResults = data.images;
+          this.isSearchingImages = false;
+        },
+        error: (err) => {
+          console.error('Error al buscar imágenes:', err);
+          this.imageSearchError = "No se pudieron cargar las imágenes. Intente de nuevo.";
+          this.isSearchingImages = false;
+          this.imageSearchResults = [];
+        }
+      });
+  }
+
+  /**
+   * Pone la URL de la imagen seleccionada en el formulario
+   */
+  selectImage(imageUrl: string): void {
+    this.articleForm.patchValue({ image: imageUrl });
+    this.imageSearchResults = []; // Limpiar resultados
+  }  
 }

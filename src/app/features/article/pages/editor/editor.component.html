@@ -6,6 +6,7 @@
 
         <form [formGroup]="articleForm">
           <pre>Valor del Formulario: {{ articleForm.value | json }}</pre>
+
           <fieldset [disabled]="isSubmitting">
             <fieldset class="form-group">
               <input
@@ -25,7 +26,7 @@
                 bsDatepicker
                 [bsConfig]="{ containerClass: 'theme-default', dateInputFormat: 'YYYY-MM-DD' }"
               />
-            </fieldset>            
+            </fieldset>
 
             <fieldset class="form-group">
               <input
@@ -50,6 +51,67 @@
               <input
                 class="form-control"
                 type="text"
+                placeholder="URL de la imagen de portada"
+                formControlName="image"
+              />
+            </fieldset>
+
+            <fieldset class="form-group">
+              <label class="text-muted">
+                <small>O busca una imagen en Unsplash:</small>
+              </label>
+              
+              <div class="input-group">
+                <input
+                  #searchBox
+                  type="text"
+                  class="form-control"
+                  placeholder="Ej: tecnología, PHP, Angular..."
+                  (keyup.enter)="searchForImage(searchBox.value)"
+                />
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  [disabled]="isSearchingImages"
+                  (click)="searchForImage(searchBox.value)"
+                >
+                  <i class="ion-search"></i> Buscar
+                </button>
+              </div>
+
+              @if (imageSearchError) {
+                <small class="text-danger d-block mt-1">
+                  {{ imageSearchError }}
+                </small>
+              }
+
+              @if (isSearchingImages) {
+                <div class="text-center mt-2">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Buscando...</span>
+                  </div>
+                </div>
+              }
+
+              @if (imageSearchResults.length > 0) {
+                <div class="image-results-grid mt-3">
+                  @for (img of imageSearchResults; track img.id) {
+                    <img
+                      [src]="img.url_small"
+                      [alt]="img.alt"
+                      class="img-thumbnail"
+                      (click)="selectImage(img.url_regular)"
+                      style="cursor: pointer; width: 100px; height: 100px; object-fit: cover; margin: 4px;"
+                      [title]="'Foto por ' + img.user_name"
+                    />
+                  }
+                </div>
+              }
+            </fieldset>
+            <fieldset class="form-group">
+              <input
+                class="form-control"
+                type="text"
                 placeholder="Enter tags"
                 [formControl]="tagField"
                 (keyup.enter)="addTag()"
@@ -64,13 +126,14 @@
               </div>
             </fieldset>
 
-          <button
-            class="btn btn-lg pull-xs-right btn-primary"
-            type="button"
-            (click)="submitForm()"
-            [disabled]="articleForm.invalid" >
-            Publish Article
-          </button>
+            <button
+              class="btn btn-lg pull-xs-right btn-primary"
+              type="button"
+              (click)="submitForm()"
+              [disabled]="articleForm.invalid"
+            >
+              Publish Article
+            </button>
           </fieldset>
         </form>
       </div>

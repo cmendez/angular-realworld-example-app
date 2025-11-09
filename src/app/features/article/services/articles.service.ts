@@ -57,4 +57,13 @@ export class ArticlesService {
   unfavorite(slug: string): Observable<void> {
     return this.http.delete<void>(`/articles/${slug}/favorite`);
   }
+
+  searchImages(query: string): Observable<{ images: any[] }> {
+    // Usamos HttpParams para añadir ?q=...
+    const params = new HttpParams().set('q', query);
+
+    // Usamos la URL relativa /images/search
+    // El interceptor de la app debería añadir el prefijo /api
+    return this.http.get<{ images: any[] }>('/images/search', { params });
+  }
 }
