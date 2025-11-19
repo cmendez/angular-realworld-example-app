@@ -5,23 +5,26 @@ import { USE_PYTHON_API } from "./api-context.token";
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const jwtService = inject(JwtService);
-  let token: string | null = null;
-  let scheme: string = "Token"; // Por defecto, el prefijo de PHP/RealWorld
+  
+  // CORRECCIÓN: Usamos SIEMPRE el token principal (el que nos dio PHP).
+  // Al compartir la JWT_SECRET, este token sirve para ambos backends.
+  const token = jwtService.getToken();
 
-  // 1. Revisa a qué backend vamos
+  let scheme: string = "Token"; // Por defecto para PHP (RealWorld spec)
+
+  // 1. Ajustamos solo el prefijo ("Token" vs "Bearer")
   if (req.context.get(USE_PYTHON_API)) {
-    // Es para Python
-    token = window.localStorage.getItem('python_token');
-    scheme = "Bearer"; // FastAPI usa "Bearer" por defecto
+    // FastAPI (Python) usa el estándar OAuth2 "Bearer"
+    scheme = "Bearer";
   } else {
-    // Es para PHP
-    token = jwtService.getToken();
-    scheme = "Token"; // El spec original de RealWorld usa "Token"
+    // Slim (PHP RealWorld) usa el estándar "Token"
+    scheme = "Token";
   }
 
-  // 2. Clona la petición y añade la cabecera correcta
+  // 2. Clona la petición y añade la cabecera si hay token
   const request = req.clone({
     setHeaders: {
+      // Si token existe, inyectamos: Authorization: Bearer xxxxx
       ...(token ? { Authorization: `${scheme} ${token}` } : {}),
     },
   });
