@@ -21,7 +21,11 @@ import { AsyncPipe, DatePipe } from "@angular/common";
             class="comment-author"
             [routerLink]="['/profile', comment.author.username]"
           >
-            <img [src]="comment.author.image" class="comment-author-img" />
+            @if (comment.author.image) {
+              <img [src]="comment.author.image" class="comment-author-img" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+            } @else {
+              <img src="assets/default-avatar.jpg" class="comment-author-img" />
+            }
           </a>
           &nbsp;
           <a

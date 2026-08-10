@@ -1,1 +1,352 @@
-/* You can add global styles to this file, and also import other style files */
+/* 
+ * ============================================================================
+ * CONDUIT PREMIUM UI OVERHAUL
+ * Modern, Glassmorphic, and Vibrant Design System
+ * ============================================================================
+ */
+
+:root {
+  /* Vibrant Palette */
+  --primary: #5cff9f;
+  --primary-glow: rgba(92, 255, 159, 0.5);
+  --primary-dark: #3bd97c;
+  --secondary: #9d4edd;
+  
+  /* Dark Theme Palette */
+  --bg-dark: #0f172a;
+  --bg-darker: #020617;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(15, 23, 42, 0.65);
+  
+  /* Utilities */
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-neon: 0 0 15px var(--primary-glow);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* =========================================
+   GLOBAL RESET & TYPOGRAPHY
+   ========================================= */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  background-color: var(--bg-darker) !important;
+  color: var(--text-main) !important;
+  line-height: 1.6;
+  min-height: 100vh;
+  /* Soft background gradient */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(157, 78, 221, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(92, 255, 159, 0.15) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .logo-font {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 700;
+  color: #fff !important;
+}
+
+a {
+  color: var(--primary) !important;
+  transition: var(--transition);
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #fff !important;
+  text-shadow: var(--shadow-neon);
+}
+
+/* =========================================
+   NAVBAR (GLASSMORPHISM)
+   ========================================= */
+.navbar {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1rem 0 !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav.navbar-nav .nav-item {
+  margin-left: 0.5rem;
+}
+
+.navbar-brand {
+  font-size: 1.8rem !important;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--bg-darker) !important;
+  background: var(--primary) !important;
+  box-shadow: var(--shadow-neon);
+}
+
+.user-pic {
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  transition: var(--transition);
+}
+.nav-link:hover .user-pic {
+  border-color: var(--bg-darker);
+}
+
+/* =========================================
+   HOME BANNER
+   ========================================= */
+.home-page .banner {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(157, 78, 221, 0.4) 100%) !important;
+  box-shadow: inset 0 -1px 0 var(--border-light);
+  padding: 4rem 0 !important;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-light);
+  border-top: none;
+}
+
+.banner h1 {
+  font-size: 4rem !important;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  margin-bottom: 1rem;
+}
+
+.banner p {
+  color: var(--text-muted) !important;
+  font-size: 1.25rem !important;
+}
+
+/* =========================================
+   CARDS & ARTICLE PREVIEWS (GLASS)
+   ========================================= */
+.article-preview, .card {
+  background: var(--bg-card) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  transition: var(--transition);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.article-preview:hover, .card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-glass);
+  border-color: rgba(92, 255, 159, 0.3) !important;
+}
+
+.article-preview h1 {
+  font-size: 1.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.article-preview p {
+  color: var(--text-muted) !important;
+}
+
+/* =========================================
+   ARTICLE META (AUTHOR INFO)
+   ========================================= */
+.article-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.article-meta img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--border-light);
+  object-fit: cover;
+  transition: var(--transition);
+}
+.article-meta img:hover {
+  border-color: var(--primary);
+  transform: scale(1.1);
+}
+
+.article-meta .info {
+  margin-left: 0.8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-meta .author {
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.article-meta .date {
+  color: var(--text-muted) !important;
+  font-size: 0.8rem;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+.btn {
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1.5rem !important;
+  transition: var(--transition) !important;
+}
+
+.btn-primary, .btn-outline-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--bg-darker) !important;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+  background-color: var(--primary-dark) !important;
+  box-shadow: var(--shadow-neon);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Favorites Button */
+.btn-outline-primary i.ion-heart {
+  margin-right: 4px;
+}
+
+/* =========================================
+   TAGS (PILLS)
+   ========================================= */
+.tag-default, .tag-pill {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 50px !important;
+  padding: 0.3rem 0.8rem !important;
+  font-size: 0.8rem !important;
+  transition: var(--transition);
+}
+
+.tag-default:hover, .tag-pill:hover {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  color: #fff !important;
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+  transform: translateY(-2px);
+}
+
+.sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+.sidebar p {
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* =========================================
+   FORMS & INPUTS
+   ========================================= */
+.form-control {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid var(--border-light) !important;
+  color: #fff !important;
+  border-radius: var(--radius-md) !important;
+  padding: 0.75rem 1rem !important;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(92, 255, 159, 0.2) !important;
+}
+
+/* =========================================
+   TABS (NAV-PILLS)
+   ========================================= */
+.nav-pills.outline-active .nav-link {
+  color: var(--text-muted) !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding-bottom: 0.5rem;
+}
+
+.nav-pills.outline-active .nav-link.active,
+.nav-pills.outline-active .nav-link:hover {
+  color: var(--primary) !important;
+  border-bottom: 2px solid var(--primary) !important;
+  box-shadow: none !important;
+}
+
+/* =========================================
+   PAGINATION
+   ========================================= */
+.pagination .page-item .page-link {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-light) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px;
+  margin: 0 4px;
+  transition: var(--transition);
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-item .page-link:hover {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--bg-darker) !important;
+  box-shadow: var(--shadow-neon);
+}

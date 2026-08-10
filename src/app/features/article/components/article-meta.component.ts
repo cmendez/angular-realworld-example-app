@@ -8,7 +8,11 @@ import { DatePipe } from "@angular/common";
   template: `
     <div class="article-meta">
       <a [routerLink]="['/profile', article.author.username]">
-        <img [src]="article.author.image" />
+        @if (article.author.image) {
+          <img [src]="article.author.image" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+        } @else {
+          <img src="assets/default-avatar.jpg" />
+        }
       </a>
 
       <div class="info">

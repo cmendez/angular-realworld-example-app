@@ -1,6 +1,9 @@
 <nav class="navbar navbar-light">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">conduit</a>
+    <a class="navbar-brand" routerLink="/" style="display: flex; align-items: center;">
+      <img src="assets/logo.jpg" alt="Conduit" style="height: 32px; border-radius: 8px; margin-right: 8px;">
+      conduit
+    </a>
 
     <!-- Show this for logged out users -->
     <ul *ifAuthenticated="false" class="nav navbar-nav pull-xs-right">
@@ -54,7 +57,9 @@
             routerLinkActive="active"
           >
             @if (currentUser.image) {
-              <img [src]="currentUser.image" class="user-pic" />
+              <img [src]="currentUser.image" class="user-pic" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+            } @else {
+              <img src="assets/default-avatar.jpg" class="user-pic" />
             }
             {{ currentUser.username }}
           </a>
