@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, HostListener, ElementRef } from "@angular/core";
 import { UserService } from "../auth/services/user.service";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { AsyncPipe } from "@angular/common";
@@ -10,5 +10,25 @@ import { IfAuthenticatedDirective } from "../auth/if-authenticated.directive";
   imports: [RouterLinkActive, RouterLink, AsyncPipe, IfAuthenticatedDirective],
 })
 export class HeaderComponent {
-  currentUser$ = inject(UserService).currentUser;
+  userService = inject(UserService);
+  elementRef = inject(ElementRef);
+  currentUser$ = this.userService.currentUser;
+
+  isDropdownOpen = false;
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  logout() {
+    this.userService.logout();
+    this.isDropdownOpen = false;
+  }
+
+  @HostListener("document:click", ["$event"])
+  onClick(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isDropdownOpen = false;
+    }
+  }
 }

@@ -1,7 +1,15 @@
 <nav class="navbar navbar-light">
   <div class="container">
-    <a class="navbar-brand" routerLink="/" style="display: flex; align-items: center;">
-      <img src="assets/logo.jpg" alt="Conduit" style="height: 32px; border-radius: 8px; margin-right: 8px;">
+    <a
+      class="navbar-brand"
+      routerLink="/"
+      style="display: flex; align-items: center"
+    >
+      <img
+        src="assets/logo.jpg"
+        alt="Conduit"
+        style="height: 32px; border-radius: 8px; margin-right: 8px"
+      />
       conduit
     </a>
 
@@ -43,26 +51,58 @@
         </a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/settings" routerLinkActive="active">
-          <i class="ion-gear-a"></i>&nbsp;Settings
-        </a>
-      </li>
-
       @if (currentUser$ | async; as currentUser) {
-        <li class="nav-item">
+        <li
+          class="nav-item dropdown"
+          [class.show]="isDropdownOpen"
+          style="position: relative"
+        >
           <a
-            class="nav-link"
-            [routerLink]="['/profile', currentUser.username]"
-            routerLinkActive="active"
+            class="nav-link dropdown-toggle"
+            (click)="toggleDropdown()"
+            style="cursor: pointer"
           >
             @if (currentUser.image) {
-              <img [src]="currentUser.image" class="user-pic" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+              <img
+                [src]="currentUser.image"
+                class="user-pic"
+                (error)="$any($event.target).src = 'assets/default-avatar.jpg'"
+              />
             } @else {
               <img src="assets/default-avatar.jpg" class="user-pic" />
             }
             {{ currentUser.username }}
           </a>
+          <div
+            class="dropdown-menu dropdown-menu-right"
+            [class.show]="isDropdownOpen"
+            style="position: absolute; right: 0; margin-top: 0"
+          >
+            <a
+              class="dropdown-item"
+              [routerLink]="['/profile', currentUser.username]"
+              (click)="isDropdownOpen = false"
+              style="cursor: pointer"
+            >
+              Mis posteos
+            </a>
+            <a
+              class="dropdown-item"
+              routerLink="/settings"
+              (click)="isDropdownOpen = false"
+              style="cursor: pointer"
+            >
+              Settings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a
+              class="dropdown-item text-danger"
+              (click)="logout()"
+              style="cursor: pointer; color: #b85c5c"
+            >
+              Cerrar sesión
+            </a>
+          </div>
         </li>
       }
     </ul>
