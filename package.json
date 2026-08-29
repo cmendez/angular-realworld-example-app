@@ -15,14 +15,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "20.0.0",
-    "@angular/common": "20.0.0",
-    "@angular/compiler": "20.0.0",
-    "@angular/core": "20.0.0",
-    "@angular/forms": "20.0.0",
-    "@angular/platform-browser": "20.0.0",
-    "@angular/platform-browser-dynamic": "20.0.0",
-    "@angular/router": "20.0.0",
+    "@angular/animations": "21.2.22",
+    "@angular/common": "21.2.22",
+    "@angular/compiler": "21.2.22",
+    "@angular/core": "21.2.22",
+    "@angular/forms": "21.2.22",
+    "@angular/platform-browser": "21.2.22",
+    "@angular/platform-browser-dynamic": "21.2.22",
+    "@angular/router": "21.2.22",
     "@rx-angular/cdk": "18.0.0",
     "@rx-angular/template": "18.0.0",
     "marked": "^11.1.0",
@@ -33,14 +33,14 @@
     "ngx-bootstrap": "^12.0.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.0.0",
-    "@angular/cli": "^20.0.0",
-    "@angular/compiler-cli": "20.0.0",
+    "@angular/build": "^21.2.22",
+    "@angular/cli": "^21.2.22",
+    "@angular/compiler-cli": "21.2.22",
     "@types/marked": "^6.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^16.1.2",
     "prettier": "^3.1.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "lint-staged": {
     "*.{ts,html,css,json,md}": "prettier --write"
