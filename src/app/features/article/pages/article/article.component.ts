@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from "../../../../core/auth/user.model";
@@ -24,6 +30,7 @@ import { FollowButtonComponent } from "../../../profile/components/follow-button
 @Component({
   selector: "app-article-page",
   templateUrl: "./article.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ArticleMetaComponent,
     RouterLink,

@@ -1,7 +1,13 @@
 // src/app/features/settings/settings.component.ts
 
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
-import { ProfileService } from '../../features/profile/services/profile.service';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { ProfileService } from "../../features/profile/services/profile.service";
 
 import {
   FormControl,
@@ -31,6 +37,7 @@ interface SettingsForm {
   selector: "app-settings-page",
   templateUrl: "./settings.component.html",
   standalone: true, // Importante: Este componente es Standalone
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ListErrorsComponent, ReactiveFormsModule],
 })
 export default class SettingsComponent implements OnInit {
@@ -59,7 +66,8 @@ export default class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.getCurrentUser()
+    this.userService
+      .getCurrentUser()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({ user }) => {
         this.user = user;
@@ -89,7 +97,7 @@ export default class SettingsComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.isSubmitting = false;
-      }
+      },
     });
   }
 }

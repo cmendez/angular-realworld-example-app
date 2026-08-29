@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, Input } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  Input,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { ArticlesService } from "../services/articles.service";
 import { ArticleListConfig } from "../models/article-list-config.model";
 import { Article } from "../models/article.model";
@@ -38,6 +44,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
     }
   `,
   imports: [ArticlePreviewComponent, NgClass],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .page-link {
       cursor: pointer;

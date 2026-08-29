@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
 import { Article } from "../models/article.model";
 import { ArticleMetaComponent } from "./article-meta.component";
 import { RouterLink } from "@angular/router";
@@ -33,6 +33,7 @@ import { FavoriteButtonComponent } from "./favorite-button.component";
       </a>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink],
 })
 export class ArticlePreviewComponent {

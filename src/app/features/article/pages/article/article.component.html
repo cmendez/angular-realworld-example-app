@@ -115,7 +115,9 @@
                 <div class="card-footer">
                   <img
                     [src]="
-                      currentUser?.image === null ? '' : currentUser?.image
+                      $safeNavigationMigration(currentUser?.image) === null
+                        ? ''
+                        : $safeNavigationMigration(currentUser?.image)
                     "
                     class="comment-author-img"
                   />

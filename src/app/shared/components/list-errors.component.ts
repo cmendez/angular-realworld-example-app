@@ -1,8 +1,9 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
 import { Errors } from "../../core/models/errors.model";
 
 @Component({
   selector: "app-list-errors",
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: "./list-errors.component.html",
 })
 export class ListErrorsComponent {

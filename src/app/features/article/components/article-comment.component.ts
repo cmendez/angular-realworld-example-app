@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { UserService } from "../../../core/auth/services/user.service";
 import { User } from "../../../core/auth/user.model";
 import { RouterLink } from "@angular/router";
@@ -22,7 +29,11 @@ import { AsyncPipe, DatePipe } from "@angular/common";
             [routerLink]="['/profile', comment.author.username]"
           >
             @if (comment.author.image) {
-              <img [src]="comment.author.image" class="comment-author-img" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+              <img
+                [src]="comment.author.image"
+                class="comment-author-img"
+                (error)="$any($event.target).src = 'assets/default-avatar.jpg'"
+              />
             } @else {
               <img src="assets/default-avatar.jpg" class="comment-author-img" />
             }
@@ -46,6 +57,7 @@ import { AsyncPipe, DatePipe } from "@angular/common";
       </div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, DatePipe, AsyncPipe],
 })
 export class ArticleCommentComponent {

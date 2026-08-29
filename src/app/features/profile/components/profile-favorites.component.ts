@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ArticleListComponent } from "../../article/components/article-list.component";
 import { ProfileService } from "../services/profile.service";
@@ -9,6 +15,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 @Component({
   selector: "app-profile-favorites",
   template: `<app-article-list [limit]="10" [config]="favoritesConfig" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ArticleListComponent],
 })
 export default class ProfileFavoritesComponent implements OnInit {

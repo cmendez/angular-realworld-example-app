@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { TagsService } from "../../services/tags.service";
 import { ArticleListConfig } from "../../models/article-list-config.model";
@@ -14,6 +20,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   selector: "app-home-page",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, ArticleListComponent, RxLet, IfAuthenticatedDirective],
 })
 export default class HomeComponent implements OnInit {

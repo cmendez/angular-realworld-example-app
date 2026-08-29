@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   Validators,
   FormGroup,
@@ -20,6 +26,7 @@ interface AuthForm {
 @Component({
   selector: "app-auth-page",
   templateUrl: "./auth.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule],
 })
 export default class AuthComponent implements OnInit {
