@@ -16,21 +16,23 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "22.1.4",
+    "@angular/cdk": "^22.1.4",
     "@angular/common": "22.1.4",
     "@angular/compiler": "22.1.4",
     "@angular/core": "22.1.4",
     "@angular/forms": "22.1.4",
+    "@angular/material": "^22.1.4",
     "@angular/platform-browser": "22.1.4",
     "@angular/platform-browser-dynamic": "22.1.4",
     "@angular/router": "22.1.4",
     "@rx-angular/cdk": "18.0.0",
     "@rx-angular/template": "18.0.0",
+    "bootstrap": "^5.3.3",
     "marked": "^11.1.0",
+    "ngx-bootstrap": "^12.0.0",
     "rxjs": "^7.4.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.1",
-    "bootstrap": "^5.3.3",
-    "ngx-bootstrap": "^12.0.0"
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
     "@angular/build": "^22.1.6",

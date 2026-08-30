@@ -44,7 +44,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
     }
   `,
   imports: [ArticlePreviewComponent, NgClass],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   styles: `
     .page-link {
       cursor: pointer;

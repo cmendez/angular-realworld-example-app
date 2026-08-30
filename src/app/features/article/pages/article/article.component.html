@@ -114,11 +114,7 @@
                 </div>
                 <div class="card-footer">
                   <img
-                    [src]="
-                      $safeNavigationMigration(currentUser?.image) === null
-                        ? ''
-                        : $safeNavigationMigration(currentUser?.image)
-                    "
+                    [src]="currentUser?.image || ''"
                     class="comment-author-img"
                   />
                   <button class="btn btn-sm btn-primary" type="submit">
@@ -135,10 +131,10 @@
             article.
           </div>
 
-          @for (comment of comments; track comment) {
+          @for (comment of comments; track comment.id) {
             <app-article-comment
               [comment]="comment"
-              (delete)="deleteComment(comment)"
+              (deleteComment)="deleteComment(comment)"
             />
           }
         </div>

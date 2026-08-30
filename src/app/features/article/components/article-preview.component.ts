@@ -33,19 +33,19 @@ import { FavoriteButtonComponent } from "./favorite-button.component";
       </a>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink],
 })
 export class ArticlePreviewComponent {
   @Input() article!: Article;
 
   toggleFavorite(favorited: boolean): void {
-    this.article.favorited = favorited;
-
-    if (favorited) {
-      this.article.favoritesCount++;
-    } else {
-      this.article.favoritesCount--;
-    }
+    this.article = {
+      ...this.article,
+      favorited,
+      favoritesCount: favorited
+        ? this.article.favoritesCount + 1
+        : this.article.favoritesCount - 1,
+    };
   }
 }

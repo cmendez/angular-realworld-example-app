@@ -20,7 +20,13 @@ import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+
+// Angular Material Datepicker
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatIconModule } from "@angular/material/icon";
 
 interface ArticleForm {
   title: FormControl<string>;
@@ -33,19 +39,23 @@ interface ArticleForm {
 @Component({
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
-  // Añade BsDatepickerModule a los imports
+  // Añade  a los imports
   imports: [
     CommonModule, // <-- 2. AÑADE CommonModule AQUÍ
     ListErrorsComponent,
     ReactiveFormsModule,
-    BsDatepickerModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatIconModule,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   standalone: true, // <-- ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ (si no estaba)
 })
 export default class EditorComponent implements OnInit {
   tagList: string[] = [];
-  articleForm: UntypedFormGroup = new FormGroup<ArticleForm>({
+  articleForm: FormGroup<ArticleForm> = new FormGroup<ArticleForm>({
     title: new FormControl("", {
       validators: [Validators.required],
       nonNullable: true,
@@ -66,7 +76,13 @@ export default class EditorComponent implements OnInit {
   errors: Errors | null = null;
   isSubmitting = false;
   destroyRef = inject(DestroyRef);
-  imageSearchResults: any[] = [];
+  imageSearchResults: {
+    id: string;
+    url_small: string;
+    url_regular: string;
+    alt: string;
+    user_name: string;
+  }[] = [];
   isSearchingImages = false;
   imageSearchError: string | null = null;
 
@@ -152,7 +168,7 @@ export default class EditorComponent implements OnInit {
       : this.articleService.create(articleData);
 
     observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (article) => this.router.navigate(["/article/", article.slug]),
+      next: (article) => this.router.navigate(["/article", article.slug]),
       error: (err) => {
         this.errors = err;
         this.isSubmitting = false;

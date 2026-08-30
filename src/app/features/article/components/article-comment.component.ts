@@ -32,7 +32,7 @@ import { AsyncPipe, DatePipe } from "@angular/common";
               <img
                 [src]="comment.author.image"
                 class="comment-author-img"
-                (error)="$any($event.target).src = 'assets/default-avatar.jpg'"
+                (error)="onImageError($event)"
               />
             } @else {
               <img src="assets/default-avatar.jpg" class="comment-author-img" />
@@ -50,19 +50,22 @@ import { AsyncPipe, DatePipe } from "@angular/common";
           </span>
           @if (canModify$ | async) {
             <span class="mod-options">
-              <i class="ion-trash-a" (click)="delete.emit(true)"></i>
+              <i class="ion-trash-a" (click)="deleteComment.emit(true)"></i>
             </span>
           }
         </div>
       </div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [RouterLink, DatePipe, AsyncPipe],
 })
 export class ArticleCommentComponent {
   @Input() comment!: Comment;
-  @Output() delete = new EventEmitter<boolean>();
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = "assets/default-avatar.jpg";
+  }
+  @Output() deleteComment = new EventEmitter<boolean>();
 
   canModify$ = inject(UserService).currentUser.pipe(
     map(

@@ -11,7 +11,7 @@
   --primary-glow: rgba(92, 255, 159, 0.5);
   --primary-dark: #3bd97c;
   --secondary: #9d4edd;
-  
+
   /* Dark Theme Palette */
   --bg-dark: #0f172a;
   --bg-darker: #020617;
@@ -20,7 +20,7 @@
   --text-muted: #94a3b8;
   --border-light: rgba(255, 255, 255, 0.1);
   --glass-bg: rgba(15, 23, 42, 0.65);
-  
+
   /* Utilities */
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -33,20 +33,31 @@
    GLOBAL RESET & TYPOGRAPHY
    ========================================= */
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif !important;
   background-color: var(--bg-darker) !important;
   color: var(--text-main) !important;
   line-height: 1.6;
   min-height: 100vh;
   /* Soft background gradient */
-  background-image: 
+  background-image:
     radial-gradient(at 0% 0%, rgba(157, 78, 221, 0.15) 0px, transparent 50%),
     radial-gradient(at 100% 0%, rgba(92, 255, 159, 0.15) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand, .logo-font {
-  font-family: 'Outfit', sans-serif !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand,
+.logo-font {
+  font-family: "Outfit", sans-serif !important;
   font-weight: 700;
   color: #fff !important;
 }
@@ -116,7 +127,8 @@ a:hover {
   transition: var(--transition);
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: var(--bg-darker) !important;
   background: var(--primary) !important;
   box-shadow: var(--shadow-neon);
@@ -138,7 +150,11 @@ a:hover {
    HOME BANNER
    ========================================= */
 .home-page .banner {
-  background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(157, 78, 221, 0.4) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    var(--bg-dark) 0%,
+    rgba(157, 78, 221, 0.4) 100%
+  ) !important;
   box-shadow: inset 0 -1px 0 var(--border-light);
   padding: 4rem 0 !important;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
@@ -149,7 +165,7 @@ a:hover {
 
 .banner h1 {
   font-size: 4rem !important;
-  text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   margin-bottom: 1rem;
 }
 
@@ -161,7 +177,8 @@ a:hover {
 /* =========================================
    CARDS & ARTICLE PREVIEWS (GLASS)
    ========================================= */
-.article-preview, .card {
+.article-preview,
+.card {
   background: var(--bg-card) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -173,7 +190,8 @@ a:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.article-preview:hover, .card:hover {
+.article-preview:hover,
+.card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-glass);
   border-color: rgba(92, 255, 159, 0.3) !important;
@@ -240,12 +258,14 @@ a:hover {
   transition: var(--transition) !important;
 }
 
-.btn-primary, .btn-outline-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: var(--primary) !important;
   border-color: var(--primary) !important;
   color: var(--bg-darker) !important;
 }
-.btn-primary:hover, .btn-outline-primary:hover {
+.btn-primary:hover,
+.btn-outline-primary:hover {
   background-color: var(--primary-dark) !important;
   box-shadow: var(--shadow-neon);
   transform: translateY(-2px);
@@ -264,7 +284,8 @@ a:hover {
 /* =========================================
    TAGS (PILLS)
    ========================================= */
-.tag-default, .tag-pill {
+.tag-default,
+.tag-pill {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: var(--text-main) !important;
   border: 1px solid var(--border-light) !important;
@@ -274,7 +295,8 @@ a:hover {
   transition: var(--transition);
 }
 
-.tag-default:hover, .tag-pill:hover {
+.tag-default:hover,
+.tag-pill:hover {
   background-color: var(--secondary) !important;
   border-color: var(--secondary) !important;
   color: #fff !important;
@@ -289,7 +311,7 @@ a:hover {
   padding: 1.5rem;
 }
 .sidebar p {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   color: #fff;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -349,4 +371,90 @@ a:hover {
   border-color: var(--primary) !important;
   color: var(--bg-darker) !important;
   box-shadow: var(--shadow-neon);
+}
+
+/* =========================================
+   ANGULAR MATERIAL DATEPICKER - DARK THEME
+   ========================================= */
+
+/* Contenedor mat-form-field */
+.datepicker-field.mat-mdc-form-field {
+  --mdc-outlined-text-field-outline-color: var(--border-light);
+  --mdc-outlined-text-field-focus-outline-color: var(--primary);
+  --mdc-outlined-text-field-label-text-color: var(--text-muted);
+  --mdc-outlined-text-field-focus-label-text-color: var(--primary);
+  --mdc-outlined-text-field-input-text-color: #fff;
+  --mdc-outlined-text-field-container-shape: 12px;
+}
+
+/* Fondo del input */
+.datepicker-field .mat-mdc-text-field-wrapper {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+/* Color del texto del input */
+.datepicker-field .mat-mdc-input-element {
+  color: #fff !important;
+  caret-color: var(--primary) !important;
+}
+
+/* Ícono del calendario (toggle) */
+.datepicker-field .mat-mdc-icon-button {
+  color: var(--text-muted) !important;
+}
+.datepicker-field .mat-mdc-icon-button:hover {
+  color: var(--primary) !important;
+}
+
+/* ---- Panel del calendario (popup) ---- */
+.mat-datepicker-content {
+  background-color: var(--bg-dark) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-glass) !important;
+}
+
+/* Encabezado del mes/año */
+.mat-calendar-header,
+.mat-calendar-controls {
+  background-color: var(--bg-dark) !important;
+}
+
+/* Texto del encabezado y días */
+.mat-calendar-body-label,
+.mat-calendar-period-button,
+.mat-calendar-body-cell-content,
+.mat-calendar-table-header th {
+  color: var(--text-main) !important;
+}
+
+/* Día seleccionado */
+.mat-calendar-body-selected {
+  background-color: var(--primary) !important;
+  color: var(--bg-darker) !important;
+}
+
+/* Hover sobre un día */
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+  background-color: rgba(92, 255, 159, 0.2) !important;
+  color: var(--primary) !important;
+}
+
+/* Botones de navegación (flechas) */
+.mat-calendar-previous-button,
+.mat-calendar-next-button {
+  color: var(--text-muted) !important;
+}
+.mat-calendar-previous-button:hover,
+.mat-calendar-next-button:hover {
+  color: var(--primary) !important;
+  background-color: rgba(92, 255, 159, 0.1) !important;
+}
+
+/* Día de hoy */
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
 }

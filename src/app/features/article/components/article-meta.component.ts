@@ -9,7 +9,7 @@ import { DatePipe } from "@angular/common";
     <div class="article-meta">
       <a [routerLink]="['/profile', article.author.username]">
         @if (article.author.image) {
-          <img [src]="article.author.image" (error)="$any($event.target).src = 'assets/default-avatar.jpg'" />
+          <img [src]="article.author.image" (error)="onImageError($event)" />
         } @else {
           <img src="assets/default-avatar.jpg" />
         }
@@ -32,4 +32,7 @@ import { DatePipe } from "@angular/common";
 })
 export class ArticleMetaComponent {
   @Input() article!: Article;
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = "assets/default-avatar.jpg";
+  }
 }

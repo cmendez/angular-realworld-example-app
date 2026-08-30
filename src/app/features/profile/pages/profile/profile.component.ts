@@ -23,7 +23,7 @@ import { FollowButtonComponent } from "../../components/follow-button.component"
 @Component({
   selector: "app-profile-page",
   templateUrl: "./profile.component.html",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     FollowButtonComponent,
     RouterLink,

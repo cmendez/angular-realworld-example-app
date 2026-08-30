@@ -20,7 +20,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   selector: "app-home-page",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgClass, ArticleListComponent, RxLet, IfAuthenticatedDirective],
 })
 export default class HomeComponent implements OnInit {
@@ -57,7 +57,7 @@ export default class HomeComponent implements OnInit {
       );
   }
 
-  setListTo(type: string = "", filters: Object = {}): void {
+  setListTo(type: "all" | "feed" = "all", filters: Object = {}): void {
     // If feed is requested but user is not authenticated, redirect to login
     if (type === "feed" && !this.isAuthenticated) {
       void this.router.navigate(["/login"]);
@@ -65,6 +65,6 @@ export default class HomeComponent implements OnInit {
     }
 
     // Otherwise, set the list object
-    this.listConfig = { type: type, filters: filters };
+    this.listConfig = { type: type as "all" | "feed", filters: filters };
   }
 }

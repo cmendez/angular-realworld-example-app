@@ -13,8 +13,33 @@ import { IfAuthenticatedDirective } from "../auth/if-authenticated.directive";
 @Component({
   selector: "app-layout-header",
   templateUrl: "./header.component.html",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [RouterLinkActive, RouterLink, AsyncPipe, IfAuthenticatedDirective],
+  styles: `
+    .navbar-brand-custom {
+      display: flex;
+      align-items: center;
+    }
+    .brand-logo {
+      height: 32px;
+      border-radius: 8px;
+      margin-right: 8px;
+    }
+    .dropdown-container {
+      position: relative;
+    }
+    .pointer-cursor {
+      cursor: pointer;
+    }
+    .dropdown-menu-custom {
+      position: absolute;
+      right: 0;
+      margin-top: 0;
+    }
+    .logout-item {
+      color: #b85c5c;
+    }
+  `,
 })
 export class HeaderComponent {
   userService = inject(UserService);
@@ -22,6 +47,14 @@ export class HeaderComponent {
   currentUser$ = this.userService.currentUser;
 
   isDropdownOpen = false;
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = "assets/default-avatar.jpg";
+  }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;

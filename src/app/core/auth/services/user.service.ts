@@ -14,6 +14,8 @@ import { User } from "../user.model";
 import { Router } from "@angular/router";
 import { USE_PYTHON_API } from "../../interceptors/api-context.token";
 
+export const PYTHON_TOKEN_KEY = "python_token";
+
 @Injectable({ providedIn: "root" })
 export class UserService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
@@ -123,7 +125,7 @@ export class UserService {
 
     // 2. NUEVO: Guarda el token de Python si existe
     if (user.python_token) {
-      window.localStorage.setItem("python_token", user.python_token);
+      window.localStorage.setItem(PYTHON_TOKEN_KEY, user.python_token);
     }
   }
 
@@ -133,6 +135,6 @@ export class UserService {
     this.currentUserSubject.next(null);
 
     // 2. NUEVO: Borra el token de Python
-    window.localStorage.removeItem("python_token");
+    window.localStorage.removeItem(PYTHON_TOKEN_KEY);
   }
 }

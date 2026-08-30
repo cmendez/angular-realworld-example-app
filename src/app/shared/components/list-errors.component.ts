@@ -3,7 +3,7 @@ import { Errors } from "../../core/models/errors.model";
 
 @Component({
   selector: "app-list-errors",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   templateUrl: "./list-errors.component.html",
 })
 export class ListErrorsComponent {

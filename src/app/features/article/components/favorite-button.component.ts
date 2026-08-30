@@ -30,7 +30,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       <i class="ion-heart"></i> <ng-content></ng-content>
     </button>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgClass],
 })
 export class FavoriteButtonComponent {

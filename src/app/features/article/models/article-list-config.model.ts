@@ -1,5 +1,5 @@
 export interface ArticleListConfig {
-  type: string;
+  type: "all" | "feed";
 
   filters: {
     tag?: string;

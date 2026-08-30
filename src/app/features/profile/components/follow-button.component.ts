@@ -33,7 +33,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       {{ profile.following ? "Unfollow" : "Follow" }} {{ profile.username }}
     </button>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgClass],
 })
 export class FollowButtonComponent {

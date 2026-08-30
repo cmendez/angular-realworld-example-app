@@ -3,53 +3,63 @@ import { inject } from "@angular/core";
 import { UserService } from "./core/auth/services/user.service";
 import { map } from "rxjs/operators";
 
+export const APP_ROUTES = {
+  HOME: "",
+  LOGIN: "login",
+  REGISTER: "register",
+  SETTINGS: "settings",
+  PROFILE: "profile",
+  EDITOR: "editor",
+  ARTICLE: "article/:slug",
+};
+
+const isNotAuthenticated = () =>
+  inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth));
+const isAuthenticated = () => inject(UserService).isAuthenticated;
+
 export const routes: Routes = [
   {
-    path: "",
+    path: APP_ROUTES.HOME,
     loadComponent: () => import("./features/article/pages/home/home.component"),
   },
   {
-    path: "login",
+    path: APP_ROUTES.LOGIN,
     loadComponent: () => import("./core/auth/auth.component"),
-    canActivate: [
-      () => inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
-    ],
+    canActivate: [isNotAuthenticated],
   },
   {
-    path: "register",
+    path: APP_ROUTES.REGISTER,
     loadComponent: () => import("./core/auth/auth.component"),
-    canActivate: [
-      () => inject(UserService).isAuthenticated.pipe(map((isAuth) => !isAuth)),
-    ],
+    canActivate: [isNotAuthenticated],
   },
   {
-    path: "settings",
+    path: APP_ROUTES.SETTINGS,
     loadComponent: () => import("./features/settings/settings.component"),
-    canActivate: [() => inject(UserService).isAuthenticated],
+    canActivate: [isAuthenticated],
   },
   {
-    path: "profile",
+    path: APP_ROUTES.PROFILE,
     loadChildren: () => import("./features/profile/profile.routes"),
   },
   {
-    path: "editor",
+    path: APP_ROUTES.EDITOR,
     children: [
       {
         path: "",
         loadComponent: () =>
           import("./features/article/pages/editor/editor.component"),
-        canActivate: [() => inject(UserService).isAuthenticated],
+        canActivate: [isAuthenticated],
       },
       {
         path: ":slug",
         loadComponent: () =>
           import("./features/article/pages/editor/editor.component"),
-        canActivate: [() => inject(UserService).isAuthenticated],
+        canActivate: [isAuthenticated],
       },
     ],
   },
   {
-    path: "article/:slug",
+    path: APP_ROUTES.ARTICLE,
     loadComponent: () =>
       import("./features/article/pages/article/article.component"),
   },

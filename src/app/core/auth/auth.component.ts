@@ -26,7 +26,7 @@ interface AuthForm {
 @Component({
   selector: "app-auth-page",
   templateUrl: "./auth.component.html",
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule],
 })
 export default class AuthComponent implements OnInit {

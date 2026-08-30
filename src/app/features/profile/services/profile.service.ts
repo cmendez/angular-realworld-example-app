@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map, shareReplay } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { Profile } from "../models/profile.model";
 import { HttpClient } from "@angular/common/http";
 import { User } from "../../../core/auth/user.model";
@@ -10,10 +10,9 @@ export class ProfileService {
   constructor(private readonly http: HttpClient) {}
 
   get(username: string): Observable<Profile> {
-    return this.http.get<{ profile: Profile }>("/profiles/" + username).pipe(
-      map((data: { profile: Profile }) => data.profile),
-      shareReplay(1),
-    );
+    return this.http
+      .get<{ profile: Profile }>("/profiles/" + username)
+      .pipe(map((data: { profile: Profile }) => data.profile));
   }
 
   follow(username: string): Observable<Profile> {
