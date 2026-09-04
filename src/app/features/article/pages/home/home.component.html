@@ -24,18 +24,20 @@
               <a
                 class="nav-link"
                 [ngClass]="{
-                  active: listConfig.type === 'all' && !listConfig.filters.tag
+                  active: listConfig.type === 'all' && !listConfig.filters.tag,
                 }"
                 (click)="setListTo('all')"
               >
                 Global Feed
               </a>
             </li>
-            <li class="nav-item" [hidden]="!listConfig.filters.tag">
-              <a class="nav-link active">
-                <i class="ion-pound"></i> {{ listConfig.filters.tag }}
-              </a>
-            </li>
+            @if (listConfig.filters.tag) {
+              <li class="nav-item">
+                <a class="nav-link active">
+                  <i class="ion-pound"></i> {{ listConfig.filters.tag }}
+                </a>
+              </li>
+            }
           </ul>
         </div>
 
@@ -57,11 +59,13 @@
             }
           </div>
 
-          <div [hidden]="tagsLoaded">Loading tags...</div>
+          @if (!tagsLoaded) {
+            <div>Loading tags...</div>
+          }
 
-          <div [hidden]="!tagsLoaded || tags.length > 0">
-            No tags are here... yet.
-          </div>
+          @if (tagsLoaded && tags.length === 0) {
+            <div>No tags are here... yet.</div>
+          }
         </div>
       </div>
     </div>

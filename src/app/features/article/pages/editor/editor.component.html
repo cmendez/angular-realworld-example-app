@@ -18,14 +18,24 @@
             </fieldset>
 
             <fieldset class="form-group">
-              <input
-                type="text"
-                placeholder="Fecha de publicación"
-                class="form-control form-control-lg"
-                formControlName="publishDate"
-                bsDatepicker
-                [bsConfig]="{ containerClass: 'theme-default', dateInputFormat: 'YYYY-MM-DD' }"
-              />
+              <mat-form-field
+                appearance="outline"
+                class="w-100 datepicker-field"
+              >
+                <mat-label>Fecha de publicación</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="publishDatePicker"
+                  formControlName="publishDate"
+                  placeholder="DD/MM/YYYY"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="publishDatePicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #publishDatePicker></mat-datepicker>
+              </mat-form-field>
             </fieldset>
 
             <fieldset class="form-group">
@@ -60,7 +70,7 @@
               <label class="text-muted">
                 <small>O busca una imagen en Unsplash:</small>
               </label>
-              
+
               <div class="input-group">
                 <input
                   #searchBox
@@ -101,7 +111,13 @@
                       [alt]="img.alt"
                       class="img-thumbnail"
                       (click)="selectImage(img.url_regular)"
-                      style="cursor: pointer; width: 100px; height: 100px; object-fit: cover; margin: 4px;"
+                      style="
+                        cursor: pointer;
+                        width: 100px;
+                        height: 100px;
+                        object-fit: cover;
+                        margin: 4px;
+                      "
                       [title]="'Foto por ' + img.user_name"
                     />
                   }

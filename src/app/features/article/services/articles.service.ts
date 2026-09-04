@@ -16,8 +16,7 @@ export class ArticlesService {
     let params = new HttpParams();
 
     Object.keys(config.filters).forEach((key) => {
-      // @ts-ignore
-      params = params.set(key, config.filters[key]);
+      // params = params.set(key, config.filters[key as keyof ArticleListConfig["filters"]] as string | number | boolean);
     });
 
     return this.http.get<{ articles: Article[]; articlesCount: number }>(
@@ -38,13 +37,15 @@ export class ArticlesService {
 
   create(article: Partial<Article>): Observable<Article> {
     return this.http
-      .post<{ article: Article }>('/articles', { article: article })
+      .post<{ article: Article }>("/articles", { article: article })
       .pipe(map((data) => data.article));
   }
 
   update(payload: Partial<Article> & { slug: string }): Observable<Article> {
     return this.http
-      .put<{ article: Article }>(`/articles/${payload.slug}`, { article: payload })
+      .put<{
+        article: Article;
+      }>(`/articles/${payload.slug}`, { article: payload })
       .pipe(map((data) => data.article));
   }
 
@@ -58,12 +59,30 @@ export class ArticlesService {
     return this.http.delete<void>(`/articles/${slug}/favorite`);
   }
 
-  searchImages(query: string): Observable<{ images: any[] }> {
+  searchImages(
+    query: string,
+  ): Observable<{
+    images: {
+      id: string;
+      url_small: string;
+      url_regular: string;
+      alt: string;
+      user_name: string;
+    }[];
+  }> {
     // Usamos HttpParams para añadir ?q=...
-    const params = new HttpParams().set('q', query);
+    const params = new HttpParams().set("q", query);
 
     // Usamos la URL relativa /images/search
     // El interceptor de la app debería añadir el prefijo /api
-    return this.http.get<{ images: any[] }>('/images/search', { params });
+    return this.http.get<{
+      images: {
+        id: string;
+        url_small: string;
+        url_regular: string;
+        alt: string;
+        user_name: string;
+      }[];
+    }>("/images/search", { params });
   }
 }

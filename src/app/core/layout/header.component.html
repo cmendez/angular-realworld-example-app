@@ -1,15 +1,7 @@
 <nav class="navbar navbar-light">
   <div class="container">
-    <a
-      class="navbar-brand"
-      routerLink="/"
-      style="display: flex; align-items: center"
-    >
-      <img
-        src="assets/logo.jpg"
-        alt="Conduit"
-        style="height: 32px; border-radius: 8px; margin-right: 8px"
-      />
+    <a class="navbar-brand navbar-brand-custom" routerLink="/">
+      <img src="assets/logo.jpg" alt="Conduit" class="brand-logo" />
       conduit
     </a>
 
@@ -53,20 +45,18 @@
 
       @if (currentUser$ | async; as currentUser) {
         <li
-          class="nav-item dropdown"
+          class="nav-item dropdown dropdown-container"
           [class.show]="isDropdownOpen"
-          style="position: relative"
         >
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle pointer-cursor"
             (click)="toggleDropdown()"
-            style="cursor: pointer"
           >
             @if (currentUser.image) {
               <img
                 [src]="currentUser.image"
                 class="user-pic"
-                (error)="$any($event.target).src = 'assets/default-avatar.jpg'"
+                (error)="onImageError($event)"
               />
             } @else {
               <img src="assets/default-avatar.jpg" class="user-pic" />
@@ -74,33 +64,29 @@
             {{ currentUser.username }}
           </a>
           <div
-            class="dropdown-menu dropdown-menu-right"
+            class="dropdown-menu dropdown-menu-right dropdown-menu-custom"
             [class.show]="isDropdownOpen"
-            style="position: absolute; right: 0; margin-top: 0"
           >
             <a
-              class="dropdown-item"
+              class="dropdown-item pointer-cursor"
               [routerLink]="['/profile', currentUser.username]"
-              (click)="isDropdownOpen = false"
-              style="cursor: pointer"
+              (click)="closeDropdown()"
             >
-              Mis posteos
+              My Posts
             </a>
             <a
-              class="dropdown-item"
+              class="dropdown-item pointer-cursor"
               routerLink="/settings"
-              (click)="isDropdownOpen = false"
-              style="cursor: pointer"
+              (click)="closeDropdown()"
             >
               Settings
             </a>
             <div class="dropdown-divider"></div>
             <a
-              class="dropdown-item text-danger"
+              class="dropdown-item text-danger pointer-cursor logout-item"
               (click)="logout()"
-              style="cursor: pointer; color: #b85c5c"
             >
-              Cerrar sesión
+              Log Out
             </a>
           </div>
         </li>

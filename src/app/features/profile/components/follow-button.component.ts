@@ -5,6 +5,7 @@ import {
   inject,
   Input,
   Output,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { switchMap } from "rxjs/operators";
@@ -23,7 +24,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       [ngClass]="{
         disabled: isSubmitting,
         'btn-outline-secondary': !profile.following,
-        'btn-secondary': profile.following
+        'btn-secondary': profile.following,
       }"
       (click)="toggleFollowing()"
     >
@@ -32,6 +33,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       {{ profile.following ? "Unfollow" : "Follow" }} {{ profile.username }}
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgClass],
 })
 export class FollowButtonComponent {

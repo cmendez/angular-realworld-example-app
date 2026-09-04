@@ -17,7 +17,7 @@ const routes: Routes = [
           {
             path: "favorites",
             loadComponent: () =>
-              import("./components/profile-favorites.component"),
+              import("./components/profile-articles.component"),
           },
         ],
       },

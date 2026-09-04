@@ -9,5 +9,5 @@ import { RouterLink } from "@angular/router";
   imports: [DatePipe, RouterLink],
 })
 export class FooterComponent {
-  today: number = Date.now();
+  readonly today: number = Date.now();
 }

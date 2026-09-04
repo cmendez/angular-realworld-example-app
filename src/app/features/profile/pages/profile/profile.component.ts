@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   ActivatedRoute,
   Router,
@@ -17,6 +23,7 @@ import { FollowButtonComponent } from "../../components/follow-button.component"
 @Component({
   selector: "app-profile-page",
   templateUrl: "./profile.component.html",
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     FollowButtonComponent,
     RouterLink,

@@ -1,7 +1,13 @@
 // src/app/features/settings/settings.component.ts
 
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
-import { ProfileService } from '../../features/profile/services/profile.service';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { ProfileService } from "../../features/profile/services/profile.service";
 
 import {
   FormControl,
@@ -18,9 +24,9 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 // 1. Añadir las nuevas propiedades a la interfaz
 interface SettingsForm {
-  image: FormControl<string>;
+  image: FormControl<string | null>;
   username: FormControl<string>;
-  bio: FormControl<string>;
+  bio: FormControl<string | null>;
   email: FormControl<string>;
   password: FormControl<string>;
   twitter_url: FormControl<string>;
@@ -31,6 +37,7 @@ interface SettingsForm {
   selector: "app-settings-page",
   templateUrl: "./settings.component.html",
   standalone: true, // Importante: Este componente es Standalone
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [ListErrorsComponent, ReactiveFormsModule],
 })
 export default class SettingsComponent implements OnInit {
@@ -41,10 +48,7 @@ export default class SettingsComponent implements OnInit {
     username: new FormControl("", { nonNullable: true }),
     bio: new FormControl("", { nonNullable: true }),
     email: new FormControl("", { nonNullable: true }),
-    password: new FormControl("", {
-      validators: [Validators.required],
-      nonNullable: true,
-    }),
+    password: new FormControl("", { nonNullable: true }),
     twitter_url: new FormControl("", { nonNullable: true }),
     linkedin_url: new FormControl("", { nonNullable: true }),
   });
@@ -59,7 +63,8 @@ export default class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.getCurrentUser()
+    this.userService
+      .getCurrentUser()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({ user }) => {
         this.user = user;
@@ -71,7 +76,6 @@ export default class SettingsComponent implements OnInit {
 
   logout(): void {
     this.userService.logout();
-    void this.router.navigate(["/"]);
   }
 
   submitForm() {
@@ -80,16 +84,16 @@ export default class SettingsComponent implements OnInit {
     // Obtenemos todos los valores del formulario
     const userData = this.settingsForm.value;
 
-    this.profileService.update(this.user.username, userData).subscribe({
-      next: (updatedProfile) => {
-        console.log("Perfil actualizado con éxito", updatedProfile);
+    this.userService.update(userData).subscribe({
+      next: ({ user }) => {
+        console.log("Perfil actualizado con éxito", user);
         // Redirigir al perfil del usuario para ver los cambios
-        this.router.navigate(["/profile", this.user.username]);
+        this.router.navigate(["/profile", user.username]);
       },
       error: (err) => {
         console.error(err);
         this.isSubmitting = false;
-      }
+      },
     });
   }
 }

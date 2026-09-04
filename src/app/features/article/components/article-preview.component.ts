@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
 import { Article } from "../models/article.model";
 import { ArticleMetaComponent } from "./article-meta.component";
 import { RouterLink } from "@angular/router";
@@ -33,18 +33,19 @@ import { FavoriteButtonComponent } from "./favorite-button.component";
       </a>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [ArticleMetaComponent, FavoriteButtonComponent, RouterLink],
 })
 export class ArticlePreviewComponent {
   @Input() article!: Article;
 
   toggleFavorite(favorited: boolean): void {
-    this.article.favorited = favorited;
-
-    if (favorited) {
-      this.article.favoritesCount++;
-    } else {
-      this.article.favoritesCount--;
-    }
+    this.article = {
+      ...this.article,
+      favorited,
+      favoritesCount: favorited
+        ? this.article.favoritesCount + 1
+        : this.article.favoritesCount - 1,
+    };
   }
 }

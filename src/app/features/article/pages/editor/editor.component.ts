@@ -1,5 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -14,34 +20,54 @@ import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../../../core/auth/services/user.service";
 import { ListErrorsComponent } from "../../../../shared/components/list-errors.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'; 
+
+// Angular Material Datepicker
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatIconModule } from "@angular/material/icon";
 
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
   body: FormControl<string>;
   publishDate: FormControl<Date | null>;
-  image: FormControl<string>
+  image: FormControl<string>;
 }
 
 @Component({
   selector: "app-editor-page",
   templateUrl: "./editor.component.html",
-  // Añade BsDatepickerModule a los imports
+  // Añade  a los imports
   imports: [
     CommonModule, // <-- 2. AÑADE CommonModule AQUÍ
     ListErrorsComponent,
     ReactiveFormsModule,
-    BsDatepickerModule
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatIconModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Default,
   standalone: true, // <-- ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ (si no estaba)
 })
 export default class EditorComponent implements OnInit {
   tagList: string[] = [];
-  articleForm: UntypedFormGroup = new FormGroup<ArticleForm>({
-    title: new FormControl("", { validators: [Validators.required], nonNullable: true }),
-    description: new FormControl("", { validators: [Validators.required], nonNullable: true }),
-    body: new FormControl("", { validators: [Validators.required], nonNullable: true }), 
+  articleForm: FormGroup<ArticleForm> = new FormGroup<ArticleForm>({
+    title: new FormControl("", {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    description: new FormControl("", {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    body: new FormControl("", {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     publishDate: new FormControl<Date | null>(null),
     image: new FormControl("", { nonNullable: true }),
   });
@@ -50,7 +76,13 @@ export default class EditorComponent implements OnInit {
   errors: Errors | null = null;
   isSubmitting = false;
   destroyRef = inject(DestroyRef);
-  imageSearchResults: any[] = [];
+  imageSearchResults: {
+    id: string;
+    url_small: string;
+    url_regular: string;
+    alt: string;
+    user_name: string;
+  }[] = [];
   isSearchingImages = false;
   imageSearchError: string | null = null;
 
@@ -73,15 +105,15 @@ export default class EditorComponent implements OnInit {
             this.tagList = article.tagList;
 
             let publishDateForForm: Date | null = null;
-            
+
             if (article.publishDate) {
               // El string que llega es "2025-09-10T00:00:00.000Z"
               // 1. Tomamos solo la parte de la fecha: "2025-09-10"
-              const datePart = article.publishDate.split('T')[0];
-              
+              const datePart = article.publishDate.split("T")[0];
+
               // 2. Creamos un nuevo objeto Date usando esa parte. Al no tener
               // información de zona horaria, JavaScript lo crea en la zona local.
-              publishDateForForm = new Date(datePart + 'T00:00:00');
+              publishDateForForm = new Date(datePart + "T00:00:00");
             }
 
             const articleForForm = {
@@ -127,7 +159,7 @@ export default class EditorComponent implements OnInit {
       tagList: this.tagList,
       // Si hay fecha, la formateamos. Si no, asignamos 'undefined'.
       publishDate: formValue.publishDate
-        ? new Date(formValue.publishDate).toLocaleDateString('en-CA') // 'en-CA' da el formato YYYY-MM-DD
+        ? new Date(formValue.publishDate).toLocaleDateString("en-CA") // 'en-CA' da el formato YYYY-MM-DD
         : undefined,
     };
 
@@ -136,7 +168,7 @@ export default class EditorComponent implements OnInit {
       : this.articleService.create(articleData);
 
     observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (article) => this.router.navigate(["/article/", article.slug]),
+      next: (article) => this.router.navigate(["/article", article.slug]),
       error: (err) => {
         this.errors = err;
         this.isSubmitting = false;
@@ -155,8 +187,9 @@ export default class EditorComponent implements OnInit {
 
     this.isSearchingImages = true;
     this.imageSearchError = null;
-    
-    this.articleService.searchImages(query)
+
+    this.articleService
+      .searchImages(query)
       .pipe(takeUntilDestroyed(this.destroyRef)) // Usamos el patrón que ya tienes
       .subscribe({
         next: (data) => {
@@ -164,11 +197,12 @@ export default class EditorComponent implements OnInit {
           this.isSearchingImages = false;
         },
         error: (err) => {
-          console.error('Error al buscar imágenes:', err);
-          this.imageSearchError = "No se pudieron cargar las imágenes. Intente de nuevo.";
+          console.error("Error al buscar imágenes:", err);
+          this.imageSearchError =
+            "No se pudieron cargar las imágenes. Intente de nuevo.";
           this.isSearchingImages = false;
           this.imageSearchResults = [];
-        }
+        },
       });
   }
 
@@ -178,5 +212,5 @@ export default class EditorComponent implements OnInit {
   selectImage(imageUrl: string): void {
     this.articleForm.patchValue({ image: imageUrl });
     this.imageSearchResults = []; // Limpiar resultados
-  }  
+  }
 }

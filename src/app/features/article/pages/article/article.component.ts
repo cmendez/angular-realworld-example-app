@@ -1,4 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { User } from "../../../../core/auth/user.model";
@@ -24,6 +30,7 @@ import { FollowButtonComponent } from "../../../profile/components/follow-button
 @Component({
   selector: "app-article-page",
   templateUrl: "./article.component.html",
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     ArticleMetaComponent,
     RouterLink,
@@ -83,17 +90,23 @@ export default class ArticleComponent implements OnInit {
   }
 
   onToggleFavorite(favorited: boolean): void {
-    this.article.favorited = favorited;
-
-    if (favorited) {
-      this.article.favoritesCount++;
-    } else {
-      this.article.favoritesCount--;
-    }
+    this.article = {
+      ...this.article,
+      favorited,
+      favoritesCount: favorited
+        ? this.article.favoritesCount + 1
+        : this.article.favoritesCount - 1,
+    };
   }
 
   toggleFollowing(profile: Profile): void {
-    this.article.author.following = profile.following;
+    this.article = {
+      ...this.article,
+      author: {
+        ...this.article.author,
+        following: profile.following,
+      },
+    };
   }
 
   deleteArticle(): void {
@@ -129,7 +142,7 @@ export default class ArticleComponent implements OnInit {
 
   deleteComment(comment: Comment): void {
     this.commentsService
-      .delete(comment.id, this.article.slug)
+      .delete(this.article.slug, comment.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.comments = this.comments.filter((item) => item !== comment);

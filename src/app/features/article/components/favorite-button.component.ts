@@ -5,6 +5,7 @@ import {
   inject,
   Input,
   Output,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { EMPTY, switchMap } from "rxjs";
@@ -22,13 +23,14 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
       [ngClass]="{
         disabled: isSubmitting,
         'btn-outline-primary': !article.favorited,
-        'btn-primary': article.favorited
+        'btn-primary': article.favorited,
       }"
       (click)="toggleFavorite()"
     >
       <i class="ion-heart"></i> <ng-content></ng-content>
     </button>
   `,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [NgClass],
 })
 export class FavoriteButtonComponent {

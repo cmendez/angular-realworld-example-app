@@ -14,15 +14,15 @@ export class CommentsService {
       .pipe(map((data) => data.comments));
   }
 
-  add(slug: string, payload: string): Observable<Comment> {
+  add(slug: string, body: string): Observable<Comment> {
     return this.http
       .post<{ comment: Comment }>(`/articles/${slug}/comments`, {
-        comment: { body: payload },
+        comment: { body },
       })
       .pipe(map((data) => data.comment));
   }
 
-  delete(commentId: string, slug: string): Observable<void> {
+  delete(slug: string, commentId: string): Observable<void> {
     return this.http.delete<void>(`/articles/${slug}/comments/${commentId}`);
   }
 }
